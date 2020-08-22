@@ -8,16 +8,18 @@
   <!-- {{products$ | async | json  }} -->
   <ng-container *ngIf="products$ | async as products">
     <ion-list *ngFor="let product of products">
-      <ion-item>
-        <ion-thumbnail slot="start">
+      <ion-card>
+        <ion-card-header>
           <ion-img [src]="product?.image"></ion-img>
-        </ion-thumbnail>
-        <ion-label>
-          <h2>{{product.name}}</h2>
-          <h3>{{product.price | currency}}</h3>
-          <h4>{{product.brand}}</h4>
-        </ion-label>
-      </ion-item>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>
+            <h2>{{product.name}}</h2>
+            <h3>{{product.price | currency}}</h3>
+            <h4>{{product.brand}}</h4>
+          </ion-label>
+        </ion-card-content>
+      </ion-card>
     </ion-list>
   </ng-container>
 </ion-content>
