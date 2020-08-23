@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>camera</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button color="primary" (click)="addPhotoToGallery()">Take Photo</ion-button>
+  <ion-grid>
+    <ion-col size="6" *ngFor="let photo of photos; index as position">
+      <ion-img [src]="photo.base64 ? photo.base64 : photo.webviewpath"></ion-img>
+    </ion-col>
+  </ion-grid>
+</ion-content>

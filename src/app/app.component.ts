@@ -41,6 +41,11 @@ export class AppComponent implements OnInit {
       title: 'Wallet',
       url: '/wallet',
       icon: 'wallet'
+    },
+    {
+      title: 'Photo',
+      url: '/camera',
+      icon: 'camera'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
