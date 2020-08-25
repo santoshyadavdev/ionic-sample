@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  Plugins, CameraResultType, Capacitor, FilesystemDirectory,
+  Plugins, CameraResultType, FilesystemDirectory,
   CameraPhoto, CameraSource
 } from '@capacitor/core';
 import { Photo } from './photo';
+
+import { ActionSheetController } from '@ionic/angular';
 
 
 const { Camera, Filesystem, Storage } = Plugins;
 @Component({
   selector: 'app-camera',
-
   templateUrl: './camera.page.html',
   styleUrls: ['./camera.page.scss'],
 })
@@ -17,7 +18,7 @@ export class CameraPage implements OnInit {
 
   photos: Photo[] = [];
   private PHOTO_STORAGE: string = "photos";
-  constructor() { }
+  constructor(public actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
     this.loadSaved();
@@ -92,5 +93,43 @@ export class CameraPage implements OnInit {
     };
     reader.readAsDataURL(blob);
   })
+
+  public async showActionSheet(photo: Photo, position: number) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Photos',
+      buttons: [{
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          this.deletePicture(photo, position);
+        }
+      }, {
+        text: 'Cancel',
+        role: 'close',
+        icon: 'cancel',
+        handler: () => {
+
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  public async deletePicture(photo: Photo, position: number){
+    this.photos.splice(position, 1);
+
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+
+    const fileName = photo.filepath.substr(photo.filepath.lastIndexOf('/'), 1);
+
+    await Filesystem.deleteFile({
+      path: fileName,
+      directory: FilesystemDirectory.Data
+    });
+  }
 
 }
