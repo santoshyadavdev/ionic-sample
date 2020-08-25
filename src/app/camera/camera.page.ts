@@ -4,10 +4,7 @@ import {
   CameraPhoto, CameraSource
 } from '@capacitor/core';
 import { Photo } from './photo';
-import { Direct } from 'protractor/built/driverProviders';
-import { promise } from 'protractor';
-import { resolve } from 'dns';
-import { read } from 'fs';
+
 
 const { Camera, Filesystem, Storage } = Plugins;
 @Component({
@@ -19,10 +16,11 @@ const { Camera, Filesystem, Storage } = Plugins;
 export class CameraPage implements OnInit {
 
   photos: Photo[] = [];
+  private PHOTO_STORAGE: string = "photos";
   constructor() { }
 
   ngOnInit() {
-
+    this.loadSaved();
   }
 
   addPhotoToGallery() {
@@ -38,6 +36,29 @@ export class CameraPage implements OnInit {
 
     const savedImageFile = await this.savePicture(capturePhoto);
     this.photos.unshift(savedImageFile);
+
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos.map(p => {
+        const photoCopy = { ...p };
+        delete photoCopy.base64;
+        return photoCopy
+      }))
+    });
+  }
+
+  public async loadSaved() {
+    const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
+    this.photos = JSON.parse(photoList.value) || [];
+
+    for (let photo of this.photos) {
+      const readFile = await Filesystem.readFile({
+        path: photo.filepath,
+        directory: FilesystemDirectory.Data
+      });
+
+      photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
+    }
   }
 
   private async savePicture(cameraPhoto: CameraPhoto) {
