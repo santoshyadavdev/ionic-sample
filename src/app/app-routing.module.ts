@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'camera',
     loadChildren: () => import('./camera/camera.module').then( m => m.CameraPageModule)
+  },
+  {
+    path: 'intercom',
+    loadChildren: () => import('./intercom/intercom.module').then( m => m.IntercomPageModule)
   }
 ];
 

@@ -46,6 +46,11 @@ export class AppComponent implements OnInit {
       title: 'Photo',
       url: '/camera',
       icon: 'camera'
+    },
+    {
+      title: 'Intercom',
+      url: '/intercom',
+      icon: 'call'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
