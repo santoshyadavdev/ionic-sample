@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'intercom',
     loadChildren: () => import('./intercom/intercom.module').then( m => m.IntercomPageModule)
+  },
+  {
+    path: 'navigator',
+    loadChildren: () => import('./navigator/navigator.module').then( m => m.NavigatorPageModule)
   }
 ];
 

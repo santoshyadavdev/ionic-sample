@@ -51,6 +51,11 @@ export class AppComponent implements OnInit {
       title: 'Intercom',
       url: '/intercom',
       icon: 'call'
+    },
+    {
+      title: 'Navigator',
+      url: '/navigator',
+      icon: 'navigate'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
